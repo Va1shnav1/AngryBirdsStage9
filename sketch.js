@@ -7,7 +7,7 @@ var engine, world;
 var box1, pig1;
 var backgroundImg,platform;
 var chain;
-var logc;
+
 function preload() {
     backgroundImg = loadImage("sprites/bg.png");
 }
@@ -38,8 +38,7 @@ function setup(){
 
     bird = new Bird(100,100);
 
-    logc = new Log(150, 200, 40, PI/2);
-    chain = new Chain(logc.body, bird.body);
+    chain = new Chain(bird.body, {x:150, y:110});
 }
 
 function draw(){
@@ -66,6 +65,13 @@ function draw(){
     bird.display();
     fill("brown");
     platform.display();
-    logc.display();
     chain.display();
+}
+
+function mouseDragged(){
+    Matter.Body.setPosition(bird.body, {x:mouseX, y:mouseY});
+}
+
+function mouseReleased(){
+    chain.fly();
 }
