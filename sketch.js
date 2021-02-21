@@ -7,7 +7,9 @@ var engine, world;
 var box1, pig1;
 var backgroundImg,platform;
 var chain;
-
+var START=0;
+var LAUNCHED=1;
+var gameState=START;
 function preload() {
     backgroundImg = loadImage("sprites/bg.png");
 }
@@ -36,17 +38,17 @@ function setup(){
     log4 = new Log(760,120,150, PI/7);
     log5 = new Log(870,120,150, -PI/7);
 
-    bird = new Bird(100,100);
+    bird = new Bird(200,50);
 
-    chain = new Chain(bird.body, {x:150, y:110});
+    chain = new Chain(bird.body, {x:200, y:50});
 }
 
 function draw(){
     background(backgroundImg);
     Engine.update(engine);
-    console.log(box2.body.position.x);
-    console.log(box2.body.position.y);
-    console.log(box2.body.angle);
+    //console.log(box2.body.position.x);
+    //console.log(box2.body.position.y);
+    //console.log(box2.body.angle);
     box1.display();
     box2.display();
     fill("green");
@@ -69,9 +71,20 @@ function draw(){
 }
 
 function mouseDragged(){
-    Matter.Body.setPosition(bird.body, {x:mouseX, y:mouseY});
+    if(gameState===START){
+        Matter.Body.setPosition(bird.body, {x:mouseX, y:mouseY});
+    }
 }
 
 function mouseReleased(){
     chain.fly();
+    gameState=LAUNCHED;
+}
+
+function keyPressed(){
+    if(keyCode===32){
+        Matter.Body.setPosition(bird.body, {x:200, y:50});
+        chain.attach(bird.body);
+        gameState=START;
+    }
 }
