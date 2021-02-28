@@ -10,6 +10,9 @@ var chain;
 var START=0;
 var LAUNCHED=1;
 var gameState=START;
+var END=2;
+var score=0;
+var bird, bird2, bird3;
 function preload() {
     backgroundImg = loadImage("sprites/bg.png");
 }
@@ -39,6 +42,8 @@ function setup(){
     log5 = new Log(870,120,150, -PI/7);
 
     bird = new Bird(200,50);
+    bird2 = new Bird(170,70);
+    bird3 = new Bird(150,70);
 
     chain = new Chain(bird.body, {x:200, y:50});
 }
@@ -64,16 +69,35 @@ function draw(){
     box5.display();
     log4.display();
     log5.display();
-    bird.display();
+    bird.rdisplay();
+    bird2.bdisplay();
+    bird3.ydisplay();
     fill("brown");
     platform.display();
     chain.display();
+    push();
+    textSize(30);
+    fill("black");
+    stroke("red");
+    strokeWeight(5);
+    text("Score: "+score, 1000, 50);
+    pop();
+    if(score===400){
+        gameState=END;
+    }
+    if(gameState===END){
+        textSize(50);
+        fill("yellow");
+        stroke("black");
+        strokeWeight(5);
+        text("YOU WIN!", 500, 75);
+    }
 }
 
 function mouseDragged(){
-    if(gameState===START){
+    //if(gameState===START){
         Matter.Body.setPosition(bird.body, {x:mouseX, y:mouseY});
-    }
+    //}
 }
 
 function mouseReleased(){
