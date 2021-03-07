@@ -13,6 +13,7 @@ var gameState=START;
 var END=2;
 var score=0;
 var bird, bird2, bird3;
+var birds = []
 function preload() {
     backgroundImg = loadImage("sprites/bg.png");
 }
@@ -42,9 +43,12 @@ function setup(){
     log5 = new Log(870,120,150, -PI/7);
 
     bird = new Bird(200,50);
-    bird2 = new Bird(170,70);
-    bird3 = new Bird(150,70);
+    bird2 = new Bird(170,220);
+    bird3 = new Bird(150,220);
 
+    birds.push(bird3)
+    birds.push(bird2);
+    birds.push(bird);
     chain = new Chain(bird.body, {x:200, y:50});
 }
 
@@ -72,6 +76,9 @@ function draw(){
     bird.rdisplay();
     bird2.bdisplay();
     bird3.ydisplay();
+    bird.displaytrajectory();
+    bird2.displaytrajectory();
+    bird3.displaytrajectory();
     fill("brown");
     platform.display();
     chain.display();
@@ -96,19 +103,23 @@ function draw(){
 
 function mouseDragged(){
     //if(gameState===START){
-        Matter.Body.setPosition(bird.body, {x:mouseX, y:mouseY});
+        Matter.Body.setPosition(birds[birds.length-1].body, {x:mouseX, y:mouseY});
     //}
 }
 
 function mouseReleased(){
     chain.fly();
     gameState=LAUNCHED;
+    birds.pop();
 }
 
 function keyPressed(){
     if(keyCode===32){
-        Matter.Body.setPosition(bird.body, {x:200, y:50});
-        chain.attach(bird.body);
+        bird.trajectory = [];
+        bird2.trajectory = [];
+        bird3.trajectory = [];
+        Matter.Body.setPosition(birds[birds.length-1].body, {x:200, y:50});
+        chain.attach(birds[birds.length-1].body);
         gameState=START;
     }
 }
