@@ -16,6 +16,7 @@ var bird, bird2, bird3;
 var birds = []
 function preload() {
     backgroundImg = loadImage("sprites/bg.png");
+    getDateTime();
 }
 
 function setup(){
@@ -53,7 +54,9 @@ function setup(){
 }
 
 function draw(){
-    background(backgroundImg);
+    if(backgroundImg){
+        background(backgroundImg);
+    }
     Engine.update(engine);
     //console.log(box2.body.position.x);
     //console.log(box2.body.position.y);
@@ -121,5 +124,17 @@ function keyPressed(){
         Matter.Body.setPosition(birds[birds.length-1].body, {x:200, y:50});
         chain.attach(birds[birds.length-1].body);
         gameState=START;
+    }
+}
+async function getDateTime(){
+    var response = await fetch("http://worldtimeapi.org/api/timezone/America/New_York");
+    var responseJSON = await response.json();
+    var dt = responseJSON.datetime;
+    var hour = dt.slice(11,13);
+    console.log(hour);
+    if(hour>=6 && hour<=18){
+        backgroundImg = loadImage("sprites/bg.png");
+    }else{
+        backgroundImg = loadImage("sprites/bg2.jpg");
     }
 }

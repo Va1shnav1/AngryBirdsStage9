@@ -41,7 +41,7 @@ class Bird extends BaseClass {
         pop();
   }
   displaytrajectory() {
-    console.log(this.body.velocity);
+    //console.log(this.body.velocity);
     if(this.body.velocity.x>10 &&
       this.body.position.x>200){
         var pos = [this.body.position.x, this.body.position.y];
