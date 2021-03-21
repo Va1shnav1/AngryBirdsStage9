@@ -13,9 +13,14 @@ var gameState=START;
 var END=2;
 var score=0;
 var bird, bird2, bird3;
-var birds = []
+var birds = [];
+var replay, replayImg;
+var birdSound, pigSound;
 function preload() {
     backgroundImg = loadImage("sprites/bg.png");
+    replayImg = loadImage("sprites/rbutton.png");
+    birdSound = loadSound("sprites/birdyell.mp3");
+    pigSound = loadSound("sprites/pigSound.mp3");
     getDateTime();
 }
 
@@ -24,6 +29,12 @@ function setup(){
     engine = Engine.create();
     world = engine.world;
 
+    replay = createButton("Replay");
+    replay.position(900, 30);
+    replay.style('background-image', 'sprites/rbutton.png');
+    replay.style('background-color', 'orange');
+    replay.style('color', 'white');
+    replay.src="sprites/rbutton.png";
 
     ground = new Ground(600,height,1200,20);
     platform = new Ground(150, 305, 300, 170);
@@ -102,6 +113,9 @@ function draw(){
         strokeWeight(5);
         text("YOU WIN!", 500, 75);
     }
+    replay.mousePressed(()=>{
+        location.reload();
+    })
 }
 
 function mouseDragged(){
@@ -111,9 +125,13 @@ function mouseDragged(){
 }
 
 function mouseReleased(){
-    chain.fly();
+    if(gameState===START){
+        //birdSound.play();
+        chain.fly();
+        birds.pop(); 
+    }
     gameState=LAUNCHED;
-    birds.pop();
+
 }
 
 function keyPressed(){

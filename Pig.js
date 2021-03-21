@@ -3,6 +3,7 @@ class Pig extends BaseClass {
     super(x,y,50,50);
     this.image = loadImage("sprites/enemy.png");
     this.visibility=255;
+    this.flag=false;
   }
   display() {
     //console.log(this.body.speed);
@@ -19,10 +20,15 @@ class Pig extends BaseClass {
         this.visibility>-400){
         score=score+1;
       }
+      if(this.flag===false){
+        pigSound.play();
+        this.flag=true;
+      }
       /*if(this.visibility<0 &&
         this.visibility>-2){
         score=score+1;
       }*/
+      
       pop();
     }
   }
